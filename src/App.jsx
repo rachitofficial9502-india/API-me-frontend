@@ -9,27 +9,23 @@ export default function App() {
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-  fetch(`${API_BASE}/profile`)
+  fetch(`${API_BASE}/profile`, {
+    cache: "no-store"
+  })
     .then(res => {
-      if (res.status === 304) {
-        // Cached response, do nothing or refetch
-        return null;
-      }
       if (!res.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error(`HTTP ${res.status}`);
       }
       return res.json();
     })
     .then(data => {
-      if (data) {
-        setProfile(data);
-      }
+      setProfile(data);
     })
     .catch(err => {
-      console.error("Profile fetch error:", err);
+      console.error("Profile fetch failed:", err);
       setProfile({ error: true });
     });
-}, []);
+    }, []);
 
 
   function handleSearch(e) {
@@ -56,7 +52,7 @@ export default function App() {
   if (profile?.error) {
     return <div className="loading">Failed to load profile</div>;
   }
-  
+
   return (
     <div className="page">
       <div className="container">
