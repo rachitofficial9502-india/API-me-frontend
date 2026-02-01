@@ -49,10 +49,14 @@ export default function App() {
       });
   }
 
-  if (profile?.error) {
-    return <div className="loading">Failed to load profile...</div>;
+  if (profile === null) {
+  return <div className="loading">Loading profile...</div>;
   }
 
+  if (profile?.error) {
+    return <div className="loading">Failed to load profile</div>;
+  }
+  
   return (
     <div className="page">
       <div className="container">
